@@ -1,6 +1,6 @@
 AI代写
 
-##一键脚本
+## 一键部署脚本
 ```
 bash <(curl -s https://raw.githubusercontent.com/chinggirltube/M3U-Proxy/refs/heads/main/m3u_proxy_installer.sh)
 ```
@@ -73,5 +73,141 @@ M3U Proxy 是专为解决地理限制问题而设计。它通过在可访问区�
 - 只添加您M3U列表里的域名或者IP到白名单中。
 
 
+### 访问管理界面
+
+启动容器后，您可以通过浏览器访问管理界面：
+
+http://您的服务器IP:5001/admin
+
+使用您设置的管理员用户名和密码登录。
+
+
+## 如果您希望手动部署
+
+### 准备工作
+
+1. 确保您的系统已安装 Docker。
+2. 准备好您的 M3U 播放列表文件。
+
+### 文件准备
+
+在您的主机上创建一个目录（例如 /home/m3u-proxy）用于存放必要的文件：
+```
+mkdir -p /home/m3u-proxy
+```
+```
+cd /home/m3u-proxy
+```
+```
+touch iptv.m3u whitelist.txt ip_whitelist.txt m3u_proxy.log
+```
+将您的 M3U 播放列表内容复制到 iptv.m3u 文件中。
+或者直接上传你的iptv.m3u文件到目录。
+
+### 使用 docker run 命令启动
+
+使用以下命令启动容器：
+
+```
+docker run -d \
+  --name m3u-proxy \
+  -p 5001:5612 \
+  -v /home/m3u-proxy/iptv.m3u:/app/iptv.m3u \
+  -v /home/m3u-proxy/whitelist.txt:/app/whitelist.txt \
+  -v /home/m3u-proxy/ip_whitelist.txt:/app/ip_whitelist.txt \
+  -v /home/m3u-proxy/m3u_proxy.log:/app/m3u_proxy.log \
+  -e PROXY_SERVER=http://您的服务器:5001 \
+  -e DEBUG_MODE=False \
+  -e ENABLE_IP_WHITELIST=False \
+  -e CONSOLE_LOG_ENABLED=True \
+  -e LOG_LEVEL=INFO \
+  -e ORIGINAL_M3U_PATH=/app/iptv.m3u \
+  -e WHITE_LIST_PATH=/app/whitelist.txt \
+  -e IP_WHITELIST_PATH=/app/ip_whitelist.txt \
+  -e LOG_FILE_PATH=/app/m3u_proxy.log \
+  -e PORT=5612 \
+  -e HOST=0.0.0.0 \
+  -e ADMIN_USERNAME=admin \
+  -e ADMIN_PASSWORD=admin123 \
+  --restart unless-stopped \
+  hiyuelin/m3u-proxy:latest
+```
+
+执行前必须在 /home/m3u-proxy 目录新建了 以下三个文件 
+whitelist.txt
+ip_whitelist.txt
+m3u_proxy.log
+上传iptv.m3u的文件
+
+注意：将 "您的服务器IP" 替换为您实际的服务器 IP 地址。
+-p 5001:5612 \      你可以修改5001为任意没被占用的端口
+-e PROXY_SERVER=http://您的服务器:5001 \   5001必须和上面的端口一致
+
+  
+
+### 推荐使用 docker-compose 启动
+
+1. 在 /home/m3u-proxy 目录中创建一个名为 docker-compose.yml 的文件：
+```
+nano /home/m3u-proxy/docker-compose.yml
+```
+2. 将以下内容复制到docker-compose.yml文件中：
+
+```
+version: '3'
+
+services:
+  m3u-proxy:
+    image: hiyuelin/m3u-proxy:latest  
+    ports:
+      - "5001:5612"
+    volumes:
+      - ./iptv.m3u:/app/iptv.m3u  
+      - ./whitelist.txt:/app/whitelist.txt  
+      - ./ip_whitelist.txt:/app/ip_whitelist.txt  
+      - ./m3u_proxy.log:/app/m3u_proxy.log  
+    environment:
+      - PROXY_SERVER=http://您的服务器:5001  # 设置代理服务器地址为您的服务器IP
+      - DEBUG_MODE=False    # 是否启用调试模式
+      - ENABLE_IP_WHITELIST=False  
+      - CONSOLE_LOG_ENABLED=True   
+      - LOG_LEVEL=INFO      
+      - ORIGINAL_M3U_PATH=/app/iptv.m3u  
+      - WHITE_LIST_PATH=/app/whitelist.txt  
+      - IP_WHITELIST_PATH=/app/ip_whitelist.txt  
+      - LOG_FILE_PATH=/app/m3u_proxy.log  
+      - PORT=5612  # 保持这个不变,因为它是容器内部的端口
+      - HOST=0.0.0.0  
+      - ADMIN_USERNAME=admin  # 设置管理员用户名
+      - ADMIN_PASSWORD=admin123  # 设置管理员密码
+    restart: unless-stopped  
+
+```
+
+注意：将 "您的服务器IP" 替换为您实际的服务器 IP 地址。
+
+3. 保存文件并退出编辑器。
+
+4. 在docker-compose.yml目录创建
+
+whitelist.txt
+ip_whitelist.txt
+m3u_proxy.log
+必须上传了iptv.m3u的文件
+
+5. 在 /home/m3u-proxy 目录中运行以下命令启动容器：
+
+```
+docker-compose up -d
+```
+
+
+### 访问管理界面
+
+启动容器后，您可以通过浏览器访问管理界面：
+
+http://您的服务器IP:5001/admin
+
+使用您设置的管理员用户名和密码登录。
 
 祝您使用愉快！
