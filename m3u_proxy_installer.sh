@@ -77,7 +77,7 @@ deploy_m3u_proxy() {
     
     # 4. 自动获取服务器 IP 地址并生成代理服务器地址
     echo "正在尝试获取服务器 IP 地址..."
-    server_ip=$(wget -qO- ifconfig.me 2>&1 || curl -s ifconfig.me)
+    server_ip=$(wget -qO- -4 ifconfig.me 2>&1 || curl -s4 ifconfig.me || dig +short myip.opendns.com @resolver1.opendns.com)
     if [ -z "$server_ip" ]; then
         echo -e "${RED}无法自动获取服务器 IP 地址${NC}"
         read -p "请手动输入服务器 IP 地址: " server_ip
