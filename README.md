@@ -1,3 +1,5 @@
+AI代写
+
 ##一键脚本
 ```
 bash <(curl -s https://raw.githubusercontent.com/chinggirltube/M3U-Proxy/refs/heads/main/m3u_proxy_installer.sh)
