@@ -140,9 +140,10 @@ m3u_proxy.log
 上传iptv.m3u的文件
 
 注意：将 "您的服务器IP" 替换为您实际的服务器 IP 地址。
--p 5001:5612 \      你可以修改5001为任意没被占用的端口
--e PROXY_SERVER=http://您的服务器:5001 \   5001必须和上面的端口一致
 
+-p 5001:5612 \      你可以修改5001为任意没被占用的端口
+
+-e PROXY_SERVER=http://您的服务器:5001 \   5001必须和上面的端口一致
   
 
 ### 推荐使用 docker-compose 启动
@@ -189,6 +190,10 @@ services:
 3. 保存文件并退出编辑器。
 
 4. 在docker-compose.yml目录创建
+
+```
+touch whitelist.txt ip_whitelist.txt m3u_proxy.log
+```
 
 whitelist.txt
 ip_whitelist.txt
