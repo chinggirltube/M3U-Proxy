@@ -1,3 +1,8 @@
+##一键脚本
+```
+bash <(curl -s https://raw.githubusercontent.com/chinggirltube/M3U-Proxy/refs/heads/main/m3u_proxy_installer.sh)
+```
+
 # M3U 代理服务器使用说明
 
 M3U Proxy 是专为解决地理限制问题而设计。它通过在可访问区域部署代理服务器，巧妙地绕过了内容提供商的地域限制。用户只需将本地播放器连接到这个代理服务器，就能享受原本无法直接访问的节目。
