@@ -168,7 +168,7 @@ services:
       - ./m3u_proxy.log:/app/m3u_proxy.log  
     environment:
       - PROXY_SERVER=http://您的服务器:5001  # 设置代理服务器地址为您的服务器IP
-      - DEBUG_MODE=False    # 是否启用调试模式
+      - DEBUG_MODE=False    
       - ENABLE_IP_WHITELIST=False  
       - CONSOLE_LOG_ENABLED=True   
       - LOG_LEVEL=INFO      
