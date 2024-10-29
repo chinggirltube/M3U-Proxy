@@ -1,5 +1,7 @@
 AI代写
 
+2024.10.29 更新 ：支持多架构（amd64, arm64, arm/v7）
+
 ## 一键部署脚本
 ```
 bash <(curl -s https://raw.githubusercontent.com/chinggirltube/M3U-Proxy/refs/heads/main/m3u_proxy_installer.sh)
