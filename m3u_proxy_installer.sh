@@ -69,7 +69,7 @@ deploy_m3u_proxy() {
     
     # 2. 创建必要的文件
     mkdir -p $m3u_dir
-    touch $m3u_dir/iptv.m3u $m3u_dir/whitelist.txt $m3u_dir/ip_whitelist.txt $m3u_dir/m3u_proxy.log
+    touch $m3u_dir/iptv.m3u $m3u_dir/whitelist.txt $m3u_dir/ip_whitelist.txt $m3u_dir/m3u_proxy.log $m3u_dir/security_config.json
     
     # 3. 设置端口
     read -p "请输入要使用的端口 (默认 5001): " port
@@ -109,6 +109,7 @@ services:
       - ./whitelist.txt:/app/whitelist.txt
       - ./ip_whitelist.txt:/app/ip_whitelist.txt
       - ./m3u_proxy.log:/app/m3u_proxy.log
+      - ./security_config.json:/app/security_config.json
     environment:
       - PROXY_SERVER=${proxy_server}
       - DEBUG_MODE=False
@@ -172,7 +173,7 @@ remove_m3u_proxy() {
     read -p "是否要删除 M3U Proxy 的配置文件和日志？(y/N): " delete_config
     if [[ $delete_config =~ ^[Yy]$ ]]; then
         echo -e "${YELLOW}删除配置文件和日志...${NC}"
-        rm -f $m3u_dir/iptv.m3u $m3u_dir/whitelist.txt $m3u_dir/ip_whitelist.txt $m3u_dir/m3u_proxy.log
+        rm -f $m3u_dir/iptv.m3u $m3u_dir/whitelist.txt $m3u_dir/ip_whitelist.txt $m3u_dir/m3u_proxy.log $m3u_dir/security_config.json
         echo -e "${GREEN}配置文件和日志已删除${NC}"
     fi
     
