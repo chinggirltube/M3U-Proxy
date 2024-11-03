@@ -2,9 +2,10 @@ AI代写
 
 需要回滚版本将latest替换成版本号 默认latest是最新版
 ```
-v1.0 只支持x86
+v1.0 仅支持x86
 v1.1 2024.10.29 更新 ：支持多架构（amd64, arm64, arm/v7）
-v1.2 2024.10.30 更新 ：支持拖拽上传M3U文件、支持URL导入M3U文件、集成编辑器、集成播放器、域名白名单优化
+v1.2 2024.10.30 更新 ：支持拖拽上传M3U文件、支持URL导入M3U文件、集成编辑器、集成播放器、域名白名单优化。
+v1.3 2024.11.03 更新 ：支持自定义管理界面访问路径，自定义访问令牌，自定义M3U文件名。
 ```
 
 ## 一键部署脚本
@@ -18,11 +19,12 @@ M3U Proxy 是专为解决地理限制问题而设计。它通过在可访问区�
 
 ## 主要功能
 
-1. **代理 M3U 播放列表**：实时更新您的频道列表，确保您始终能访问最新的内容。
-2. **域名白名单**：允许您控制哪些域名可以被代理访问，增加安全性。
-3. **IP 白名单**：限制只有特定的 IP 地址可以访问您的播放列表，提供额外的安全层。
-4. **管理界面**：提供一个用户友好的界面，让您可以轻松管理服务器设置、查看统计信息等。
-5. **日志记录**：记录重要事件和错误，帮助您监控和排查问题。
+ 1. **代理 M3U 播放列表**：实时更新您的频道列表，确保您始终能访问最新的内容。
+ 2. **域名白名单**：允许您控制哪些域名可以被代理访问，增加安全性。
+ 3. **IP 白名单**：限制只有特定的 IP 地址可以访问您的播放列表，提供额外的安全层。
+ 4. **管理界面**：提供一个用户友好的界面，让您可以轻松管理服务器设置、查看统计信息等。
+ 5. **日志记录**：记录重要事件和错误，帮助您监控和排查问题。
+ 6. **安全配置** 支持自定义管理界面访问路径，自定义访问令牌，自定义M3U文件名。
 
 ## 安装步骤
 
@@ -36,24 +38,32 @@ M3U Proxy 是专为解决地理限制问题而设计。它通过在可访问区�
    - 按照提示输入必要的信息（如安装目录、端口号等）。
    - 脚本会自动完成安装和配置过程。
 
+
+
 3. **安装后配置**
    - 安装完成后，您会看到管理界面的地址、用户名和密码。
    - 使用这些信息登录管理界面，进行进一步的设置。
 
 ## 使用说明
 
-1. **添加频道列表**
-   - 将您的频道列表添加到 `iptv.m3u` 文件中，或者上传您自己的 `iptv.m3u` 文件替换现有文件。
+ 1. **添加频道列表**
+ 将您的频道列表添加到 `iptv.m3u` 文件中，或者上传您自己的 `iptv.m3u` 文件替换现有文件。
 
-2. **管理白名单**
-   - 使用 `whitelist.txt` 文件管理域名白名单。
-   - 使用 `ip_whitelist.txt` 文件管理 IP 白名单。
 
-3. **更新白名单**
-   - 每次修改 `iptv.m3u` 文件后，请在管理界面中点击"刷新域名白名单"按钮。
+ V1.2版本已支持拖拽上传M3U文件、支持URL导入M3U文件。
 
-4. **使用代理后的播放列表**
-   - 在您的播放器中使用新的 M3U 文件地址（形如 `http://您的服务器IP:端口/iptv.m3u`）。
+
+ 1. **管理白名单**
+ 使用 `whitelist.txt` 文件管理域名白名单。
+ 使用 `ip_whitelist.txt` 文件管理 IP 白名单。
+
+ 2. **更新白名单**
+ 每次修改 `iptv.m3u` 文件后，请在管理界面中点击"刷新域名白名单"按钮。
+
+
+
+ 3. **使用代理后的播放列表**
+ 在您的播放器中使用新的 M3U 文件地址（形如 `http://您的服务器IP:端口/iptv.m3u`）。
 
 ## 注意事项
 
@@ -85,6 +95,7 @@ http://您的服务器IP:5001/admin
 使用您设置的管理员用户名和密码登录。
 
 
+
 ## 如果您希望手动部署
 
 ### 准备工作
@@ -102,7 +113,7 @@ mkdir -p /home/m3u-proxy
 cd /home/m3u-proxy
 ```
 ```
-touch iptv.m3u whitelist.txt ip_whitelist.txt m3u_proxy.log
+touch iptv.m3u whitelist.txt ip_whitelist.txt m3u_proxy.log security_config.json
 ```
 将您的 M3U 播放列表内容复制到 iptv.m3u 文件中。
 或者直接上传你的iptv.m3u文件到目录。
@@ -119,6 +130,7 @@ docker run -d \
   -v /home/m3u-proxy/whitelist.txt:/app/whitelist.txt \
   -v /home/m3u-proxy/ip_whitelist.txt:/app/ip_whitelist.txt \
   -v /home/m3u-proxy/m3u_proxy.log:/app/m3u_proxy.log \
+  -v /home/m3u-proxy/security_config.json:/app/security_config.json \
   -e PROXY_SERVER=http://您的服务器:5001 \
   -e DEBUG_MODE=False \
   -e ENABLE_IP_WHITELIST=False \
@@ -136,11 +148,13 @@ docker run -d \
   hiyuelin/m3u-proxy:latest
 ```
 
-执行前必须在 /home/m3u-proxy 目录新建了 以下三个文件 
+执行前必须在 /home/m3u-proxy 目录新建了 以下五个文件 
+iptv.m3u
 whitelist.txt
 ip_whitelist.txt
 m3u_proxy.log
-上传iptv.m3u的文件
+security_config.json
+
 
 注意：将 "您的服务器IP" 替换为您实际的服务器 IP 地址。
 
@@ -169,7 +183,8 @@ services:
       - ./iptv.m3u:/app/iptv.m3u  
       - ./whitelist.txt:/app/whitelist.txt  
       - ./ip_whitelist.txt:/app/ip_whitelist.txt  
-      - ./m3u_proxy.log:/app/m3u_proxy.log  
+      - ./m3u_proxy.log:/app/m3u_proxy.log
+      - ./security_config.json:/app/security_config.json   
     environment:
       - PROXY_SERVER=http://您的服务器:5001  # 设置代理服务器地址为您的服务器IP
       - DEBUG_MODE=False    
@@ -195,13 +210,15 @@ services:
 4. 在docker-compose.yml目录创建
 
 ```
-touch whitelist.txt ip_whitelist.txt m3u_proxy.log
+touch iptv.m3u whitelist.txt ip_whitelist.txt m3u_proxy.log security_config.json
 ```
 
+目录内有以下文件
 whitelist.txt
 ip_whitelist.txt
 m3u_proxy.log
-必须上传了iptv.m3u的文件
+security_config.json
+iptv.m3u
 
 5. 在 /home/m3u-proxy 目录中运行以下命令启动容器：
 
@@ -236,6 +253,7 @@ http://您的服务器IP:5001/admin
   - 支持拖拽上传M3U文件
   - 上传后刷新编辑器内容
   - 改进文件编码支持
+
 
 - **在线编辑器**
   - 集成编辑器
@@ -293,3 +311,28 @@ http://您的服务器IP:5001/admin
 - 改进了域名白名单同步机制
 - 添加了更多的错误处理和日志记录
 
+
+##  M3U Proxy 更新说明 (2024-11-03)
+
+### 1. 安全访问增强
+- **管理面板路径自定义**
+  - 支持自定义管理界面访问路径
+  - 默认路径为 `/admin`
+  - 可通过Web界面随时修改
+
+- **M3U文件访问安全控制**
+  - 支持自定义访问令牌
+  - 支持自定义M3U文件名
+  - 自动生成安全的访问链接
+
+### 2. Web界面优化
+- **安全配置面板**
+  - 添加安全配置管理卡片
+  - 实时预览访问链接
+  - 一键生成随机令牌
+
+### 3. 配置管理优化
+- **配置文件持久化**
+  - 使用 JSON 文件存储配置
+  - 容器重启后配置不丢失
+  - 支持配置备份和恢复
