@@ -26,6 +26,8 @@ M3U Proxy 是专为解决地理限制问题而设计。它通过在可访问区�
  5. **日志记录**：记录重要事件和错误，帮助您监控和排查问题。
  6. **安全配置** 支持自定义管理界面访问路径，自定义访问令牌，自定义M3U文件名。
 
+![M3U代理管理界面-11-10-2024_09_12_AM](https://github.com/user-attachments/assets/489cac6a-8ce1-45a1-a673-84aae037a375)
+
 ## 安装步骤
 
 1. **准备工作**
@@ -37,7 +39,6 @@ M3U Proxy 是专为解决地理限制问题而设计。它通过在可访问区�
    - 在子菜单中选择"部署 M3U Proxy"选项。
    - 按照提示输入必要的信息（如安装目录、端口号等）。
    - 脚本会自动完成安装和配置过程。
-
 
 
 3. **安装后配置**
@@ -216,6 +217,7 @@ ip_whitelist.txt
 m3u_proxy.log
 security_config.json
 iptv.m3u
+docker-compose.yml
 
 5. 在 /home/m3u-proxy 目录中运行以下命令启动容器：
 
@@ -269,6 +271,8 @@ http://您的服务器IP:5001/admin
   - 左侧频道列表
   - 支持频道预览图标
 
+![image](https://github.com/user-attachments/assets/69df3f73-584d-460e-bd7a-3fe91b6b828f)
+
 
 ### 3. 域名白名单优化
 - 完全同步机制
@@ -316,6 +320,8 @@ http://您的服务器IP:5001/admin
   - 支持自定义管理界面访问路径
   - 默认路径为 `/admin`
   - 可通过Web界面随时修改
+
+![image](https://github.com/user-attachments/assets/a0d459fa-97b2-4d1f-b2a8-09b3aaa70b46)
 
 - **M3U文件访问安全控制**
   - 支持自定义访问令牌
